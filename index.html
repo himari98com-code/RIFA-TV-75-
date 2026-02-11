@@ -7,11 +7,12 @@
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: #f4f7f6; padding: 20px; color: #333; }
         .header-info { background: #fff; max-width: 800px; margin: 0 auto 20px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 5px solid #1a73e8; }
+        .foto-tele { max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .fecha { color: #1a73e8; font-weight: bold; font-size: 1.2em; margin-bottom: 10px; }
-        .reglas { color: #d93025; font-weight: 600; font-size: 0.95em; }
+        .reglas { color: #d93025; font-weight: 600; font-size: 0.95em; line-height: 1.5; }
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); 
             gap: 10px; max-width: 900px; margin: 20px auto; 
             background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
@@ -21,12 +22,14 @@
             transition: all 0.2s;
         }
         button:hover { background: #e8f0fe; border-color: #1a73e8; transform: scale(1.05); }
-        .vendido { background: #ea4335 !important; color: white; cursor: not-allowed; border: none; }
+        .vendido { background: #ea4335 !important; color: white; cursor: not-allowed; border: none; opacity: 0.8; }
     </style>
 </head>
 <body>
 
     <div class="header-info">
+        <img src="tele.jpg" alt="Televisión 75 pulgadas" class="foto-tele" onerror="this.src='https://via.placeholder.com/800x400?text=TV+75+Pulgadas'">
+        
         <h1>🎫 Reserva tu número</h1>
         <div class="fecha">📅 Sorteo: Viernes 27 de febrero de 2026 a las 20:00hrs</div>
         <div class="reglas">
@@ -40,7 +43,9 @@
     <script>
         const MI_TELEFONO = "526562161341"; 
         const TOTAL_BOLETOS = 400;
-        const vendidos = []; // Agrega aquí los números vendidos: ["001", "045"]
+
+        // --- LISTA DE NÚMEROS VENDIDOS ---
+        const vendidos = ["008", "012", "014", "015", "017", "020", "021", "024", "025", "027", "037", "054", "073", "105", "111", "114", "130", "189"]; 
 
         const tablero = document.getElementById('tablero');
 
@@ -51,12 +56,12 @@
 
             if (vendidos.includes(num)) {
                 btn.classList.add('vendido');
+                btn.innerHTML = num + "<br>❌";
                 btn.disabled = true;
             } else {
                 btn.onclick = () => {
                     const nombre = prompt(`Boleto #${num}\n¿A nombre de quién lo registro?`);
                     if (!nombre) return;
-
                     const mensaje = encodeURIComponent(`¡Hola! Quiero reservar el boleto #${num}. Mi nombre es ${nombre}.`);
                     window.open(`https://wa.me/${MI_TELEFONO}?text=${mensaje}`, '_blank');
                 };
