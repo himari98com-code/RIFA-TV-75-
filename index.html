@@ -6,27 +6,33 @@
     <title>Sorteo TV 75" - Cd. Juárez</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; background-color: #f4f7f6; padding: 20px; color: #333; margin-bottom: 100px; }
-        .header-info { background: #fff; max-width: 800px; margin: 0 auto 20px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 5px solid #1a73e8; position: relative; }
-        .ubicacion-tag { background: #ff9800; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 10px; font-size: 0.9em; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .foto-tele { max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .precio { font-size: 2.2em; color: #2e7d32; font-weight: 800; margin: 10px 0; }
-        .fecha { color: #1a73e8; font-weight: bold; font-size: 1.3em; margin-bottom: 5px; }
-        .loteria { color: #d93025; font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
-        .regla-mayor { color: #444; font-weight: bold; font-size: 1em; background: #eef3ff; display: inline-block; padding: 10px 20px; border-radius: 10px; border: 1px solid #1a73e8; margin-bottom: 15px; line-height: 1.4; }
+        .header-info { background: #fff; max-width: 800px; margin: 0 auto 20px; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 5px solid #1a73e8; }
+        .ubicacion-tag { background: #ff9800; color: white; padding: 5px 15px; border-radius: 20px; font-weight: bold; display: inline-block; margin-bottom: 10px; font-size: 0.9em; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 10px; max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; }
-        button { padding: 15px 0; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        
-        /* Estados de los botones */
-        .vendido { background: #ea4335 !important; color: white; cursor: not-allowed; border: none; }
-        .seleccionado { background: #1a73e8 !important; color: white; border-color: #1a73e8; transform: scale(1.05); box-shadow: 0 4px 8px rgba(26,115,232,0.4); }
+        /* Barra de Progreso */
+        .progreso-container { margin: 20px auto; max-width: 500px; padding: 0 20px; }
+        .barra-gris { background: #e0e0e0; border-radius: 20px; height: 20px; width: 100%; overflow: hidden; margin-top: 8px; }
+        .barra-color { background: linear-gradient(90deg, #25d366, #128c7e); height: 100%; width: 0%; transition: width 1s; }
 
-        /* Botón de WhatsApp flotante */
+        /* Buscador */
+        .buscador-container { background: #e3f2fd; padding: 15px; border-radius: 12px; margin: 20px auto; max-width: 400px; border: 1px solid #90caf9; }
+        .buscador-container input { padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 70%; margin-bottom: 10px; }
+        .buscador-container button { background: #1a73e8; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        /* Resultados */
+        .resultados-box { background: #fff; border: 2px dashed #1a73e8; max-width: 600px; margin: 30px auto; padding: 20px; border-radius: 15px; }
+        .ganador-info { color: #d93025; font-size: 1.2em; font-weight: bold; margin-top: 10px; }
+        .privacidad-nota { font-size: 0.85em; color: #666; font-style: italic; margin-top: 15px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 10px; max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; }
+        button.num-btn { padding: 15px 0; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer; }
+        .vendido { background: #ea4335 !important; color: white; cursor: not-allowed; opacity: 0.6; }
+        .seleccionado { background: #1a73e8 !important; color: white; transform: scale(1.05); }
+
         .btn-flotante { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: #25d366; color: white; padding: 15px 30px; border-radius: 50px;
-            font-size: 1.2em; font-weight: bold; text-decoration: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            display: none; z-index: 1000; border: none; cursor: pointer;
+            font-size: 1.2em; font-weight: bold; display: none; z-index: 1000; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -34,42 +40,68 @@
 
     <div class="header-info">
         <div class="ubicacion-tag">📍 SOLO CIUDAD JUÁREZ</div>
-        <img src="tele.jpg" alt="Televisión 75 pulgadas" class="foto-tele">
-        <h1>🎫 Reserva tus números</h1>
-        <div class="precio">💰 $50 PESOS C/U</div>
-        <div class="fecha">📅 Viernes 27 de febrero de 2026</div>
-        <div class="loteria">🎰 Lotería Nacional (20:00 hrs)</div>
-        <div class="regla-mayor">Selecciona todos los que quieras y dale clic al botón verde.</div>
+        <h1>🎫 Rifa Smart TV 75"</h1>
+        
+        <div class="progreso-container">
+            <strong>📊 Boletos vendidos: <span id="porcentajeText">0%</span></strong>
+            <div class="barra-gris">
+                <div id="barraProgreso" class="barra-color"></div>
+            </div>
+        </div>
+
+        <div class="buscador-container">
+            <strong>🔍 Consulta tus números</strong><br><br>
+            <input type="number" id="inputBusqueda" placeholder="Teléfono a 10 dígitos">
+            <button onclick="buscarBoletos()">Verificar</button>
+        </div>
     </div>
 
     <div id="tablero" class="grid"></div>
 
+    <div class="resultados-box">
+        <h3>🏆 RESULTADOS DEL SORTEO</h3>
+        <p>El número ganador se publicará aquí con fecha y hora exacta tras el sorteo de la Lotería Nacional.</p>
+        <div class="ganador-info" id="datosGanador">
+            Esperando sorteo... (27 Feb 2026)
+        </div>
+        <p class="privacidad-nota">
+            ⚠️ <strong>Nota de privacidad:</strong> Por seguridad de nuestros participantes, los datos personales serán protegidos, mostrando únicamente el nombre de pila y el número de boleto premiado. Los comprobantes de pago mostrados tendrán censurados datos bancarios sensibles.
+        </p>
+    </div>
+
     <button id="btnWhatsapp" class="btn-flotante" onclick="enviarPedido()">
-        Reservar <span id="contador">0</span> números (Total: $<span id="monto">0</span>)
+        Reservar <span id="contador">0</span> números
     </button>
 
     <script>
-        const MI_TELEFONO = "526562161341"; 
-        const PRECIO_BOLETO = 50;
-        const vendidos = [
-            "003", "004", "008", "011", "012", "014", "015", "016", "017", "020", 
-            "021", "024", "025", "027", "029", "037", "047", "054", "073", "105", 
-            "111", "114", "117", "130", "167", "189", "226", "237"
-        ]; 
+        const MI_TELEFONO = "526562161341";
+        const totalTotal = 400;
 
+        // --- ACTUALIZA AQUÍ TUS VENTAS ---
+        const asignaciones = {
+            "003": "6561112233",
+            "004": "6561112233",
+            "029": "6560001122",
+            "117": "6560001122",
+            "167": "6569998877",
+            "237": "6565554433"
+        };
+
+        const vendidos = Object.keys(asignaciones);
         let seleccionados = [];
 
-        function actualizarInterfaz() {
-            const btn = document.getElementById('btnWhatsapp');
-            const contador = document.getElementById('contador');
-            const monto = document.getElementById('monto');
-            
-            if (seleccionados.length > 0) {
-                btn.style.display = 'block';
-                contador.innerText = seleccionados.length;
-                monto.innerText = seleccionados.length * PRECIO_BOLETO;
+        // Lógica de Barra de Progreso
+        const porc = (vendidos.length / totalTotal) * 100;
+        document.getElementById('barraProgreso').style.width = porc + "%";
+        document.getElementById('porcentajeText').innerText = porc.toFixed(1) + "%";
+
+        function buscarBoletos() {
+            const tel = document.getElementById('inputBusqueda').value;
+            const encontrados = Object.keys(asignaciones).filter(n => asignaciones[n] === tel);
+            if (encontrados.length > 0) {
+                alert(`✅ Tienes registrados los números: ${encontrados.join(', ')}`);
             } else {
-                btn.style.display = 'none';
+                alert("❌ No se encontraron números con ese teléfono.");
             }
         }
 
@@ -81,27 +113,26 @@
                 seleccionados.push(num);
                 elemento.classList.add('seleccionado');
             }
-            actualizarInterfaz();
+            document.getElementById('btnWhatsapp').style.display = seleccionados.length > 0 ? 'block' : 'none';
+            document.getElementById('contador').innerText = seleccionados.length;
         }
 
         function enviarPedido() {
-            const nombre = prompt(`Has elegido: ${seleccionados.join(', ')}\n¿A nombre de quién reservamos?`);
-            if (!nombre) return;
-            
-            const mensaje = encodeURIComponent(`¡Hola! Quiero reservar estos boletos:\n🔢 Números: ${seleccionados.join(', ')}\n👤 Nombre: ${nombre}\n💰 Total: $${seleccionados.length * PRECIO_BOLETO} pesos`);
-            window.open(`https://wa.me/${MI_TELEFONO}?text=${mensaje}`);
+            const nombre = prompt("¿Nombre?");
+            const tel = prompt("¿Teléfono?");
+            if (!nombre || !tel) return;
+            const msg = `Hola! Quiero apartar: ${seleccionados.join(', ')}\nNombre: ${nombre}\nTel: ${tel}`;
+            window.open(`https://wa.me/${MI_TELEFONO}?text=${encodeURIComponent(msg)}`);
         }
 
-        // Generar Tablero
         const tablero = document.getElementById('tablero');
-        for (let i = 1; i <= 400; i++) {
+        for (let i = 1; i <= totalTotal; i++) {
             const num = i.toString().padStart(3, '0');
             const btn = document.createElement('button');
+            btn.className = 'num-btn';
             btn.innerText = num;
-
             if (vendidos.includes(num)) {
                 btn.classList.add('vendido');
-                btn.innerHTML = num + "<br>❌";
                 btn.disabled = true;
             } else {
                 btn.onclick = () => toggleNumero(num, btn);
